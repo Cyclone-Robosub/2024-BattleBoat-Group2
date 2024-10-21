@@ -3,8 +3,8 @@
 #define INCLUDE_GAMEPAD_MODULE
 #include <Dabble.h>
 
-//clockwise backward
-//counterclockwise forward
+// clockwise backward
+// counterclockwise forward
 int motorLPower = 0;
 int motorLpin1;
 int motorLPWM;
@@ -23,22 +23,26 @@ void setup()
   Serial.begin(250000); // make sure your Serial Monitor is also set at this baud rate.
   Dabble.begin(9600);   // Enter baudrate of your bluetooth.Connect bluetooth on Bluetooth port present on evive.
   // Need the pin numbers for these motors
-  pinMode(motorControl1, OUTPUT);
-  pinMode(motorContorl2, OUTPUT);
-  pinMode(motorContorl3, OUTPUT)
+  pinMode(motorLpin1, OUTPUT);
+  pinMode(motorLpin2, OUTPUT);
+  pinMode(motorRpin1, OUTPUT);
+  pinMode(motorRpin2, OUTPUT);
+  pinMode(motorMpin1, OUTPUT);
+  pinMode(motorMpin2, OUTPUT);
 }
 
 void loop()
 {
   Dabble.processInput(); // this function is used to refresh data obtained from smartphone.Hence calling this function is mandatory in order to get data properly from your mobile.
-float y = GamePad.getYaxisData();
-float x = GamePad.getXaxisData();
+  float y = GamePad.getYaxisData();
+  float x = GamePad.getXaxisData();
 
   // as the x gets greater L power motor needs to be greater than R
   // as y gets greater
   int motorDifference = 0;
   int motorPower = 0;
-  if(y == 0){
+  if (y == 0)
+  {
     analogWrite(motorMPWM, motorPower);
   }
   else if (y > 0)
@@ -47,7 +51,7 @@ float x = GamePad.getXaxisData();
     motorPower = int((39 * y));
     // Both Motor Needs to be forward
     digitalWrite(motorLpin1, HIGH);
-    digitalWrite(motorLpin2,LOW);
+    digitalWrite(motorLpin2, LOW);
     digitalWrite(motorRpin1, HIGH);
     digitalWrite(motorRpin2, LOW);
     digitalWrite(motorMpin1, HIGH);
@@ -60,10 +64,10 @@ float x = GamePad.getXaxisData();
     }
     else if (x > 0)
     {
-      if (motorPower - motorDiffernce < 0)
+      if (motorPower - motorDifference < 0)
       {
         digitalWrite(motorRpin1, LOW);
-    digitalWrite(motorRpin2, HIGH);
+        digitalWrite(motorRpin2, HIGH);
       }
       analogWrite(motorMPWM, motorPower);
       analogWrite(motorLPWM, motorPower);
@@ -74,7 +78,7 @@ float x = GamePad.getXaxisData();
       if (motorPower - motorDifference < 0)
       {
         digitalWrite(motorLpin1, LOW);
-        digitalWrite(motorLpin2,HIGH);  
+        digitalWrite(motorLpin2, HIGH);
       }
       analogWrite(motorMPWM, motorPower);
       analogWrite(motorLPWM, abs(motorPower - motorDifference));
@@ -85,7 +89,7 @@ float x = GamePad.getXaxisData();
   {
     // Both Motor Needs to be backward
     digitalWrite(motorLpin1, LOW);
-    digitalWrite(motorLpin2,HIGH);
+    digitalWrite(motorLpin2, HIGH);
     digitalWrite(motorRpin1, LOW);
     digitalWrite(motorRpin2, HIGH);
     digitalWrite(motorMpin1, LOW);
@@ -100,7 +104,7 @@ float x = GamePad.getXaxisData();
     }
     else if (x > 0)
     {
-      if (motorPower - motorDiffernce < 0)
+      if (motorPower - motorDifference < 0)
       {
         digitalWrite(motorRpin1, HIGH);
         digitalWrite(motorRpin2, LOW);
@@ -114,15 +118,14 @@ float x = GamePad.getXaxisData();
     {
       if (motorPower - motorDifference < 0)
       {
-         digitalWrite(motorRpin1,LOW);
-         digitalWrite(motorRpin2, HIGH);
+        digitalWrite(motorRpin1, LOW);
+        digitalWrite(motorRpin2, HIGH);
       }
       analogWrite(motorLPWM, abs(motorPower - motorDifference));
       analogWrite(motorRPWM, motorPower);
       analogWrite(motorMPWM, motorPower);
     }
   }
-
 
   Serial.print("KeyPressed: ");
   if (GamePad.isUpPressed())
@@ -149,7 +152,7 @@ float x = GamePad.getXaxisData();
   {
     Serial.print("Square");
     analogWrite(motorMPWM, 0);
-    digitalWrite(motorControl2, HIGH);
+    // digitalWrite(motorControl2, HIGH);
     delay(50);
   }
 
@@ -157,7 +160,7 @@ float x = GamePad.getXaxisData();
   {
     Serial.print("Circle");
     analogWrite(motorMPWM, 0);
-    digitalWrite(motorControl1, HIGH);
+    //  digitalWrite(motorControl1, HIGH);
     delay(50);
   }
 
@@ -166,9 +169,9 @@ float x = GamePad.getXaxisData();
     Serial.print("Cross");
     analogWrite(motorMPWM, 0);
     digitalWrite(motorLpin1, HIGH);
-    digitalWrite(motorLpin2,LOW);
+    digitalWrite(motorLpin2, LOW);
     digitalWrite(motorRpin1, LOW);
-    digitalWrite(motorRpin2,HIGH);
+    digitalWrite(motorRpin2, HIGH);
     analogWrite(motorLPWM, 255);
     analogWrite(motorRPWM, 255);
     delay(20);
@@ -177,9 +180,9 @@ float x = GamePad.getXaxisData();
   if (GamePad.isTrianglePressed())
   {
     Serial.print("Triangle");
-     analogWrite(motorMPWM, 0);
+    analogWrite(motorMPWM, 0);
     digitalWrite(motorLpin1, LOW);
-    digitalWrite(motorLpin2,HIGH);
+    digitalWrite(motorLpin2, HIGH);
     digitalWrite(motorRpin1, HIGH);
     digitalWrite(motorRpin2, LOW);
     analogWrite(motorLPWM, 255);
@@ -204,15 +207,14 @@ float x = GamePad.getXaxisData();
   Serial.print('\t');
   int r = GamePad.getRadius();
   Serial.print("Radius: ");
-  Serial.print(b);
+  // Serial.print(b);
   Serial.print('\t');
- // float x = GamePad.getXaxisData();
+  // float x = GamePad.getXaxisData();
   Serial.print("x_axis: ");
   Serial.print(x);
   Serial.print('\t');
- // float y = GamePad.getYaxisData();
+  // float y = GamePad.getYaxisData();
   Serial.print("y_axis: ");
   Serial.println(y);
   Serial.println();
-
 }
