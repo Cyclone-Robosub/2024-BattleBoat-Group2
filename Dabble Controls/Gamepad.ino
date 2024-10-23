@@ -97,7 +97,7 @@ void loop()
     digitalWrite(motorRpin2, HIGH);
     digitalWrite(motorMpin1, LOW);
     digitalWrite(motorMpin2, HIGH);
-    motorDifference = int((18 * x));
+    motorDifference = int((18 * abs(x)));
     motorPower = int((39 * abs(y)) + 18);
     if (y == -7)
     {
@@ -109,23 +109,22 @@ void loop()
     {
       if (motorPower - motorDifference < 0)
       {
-        digitalWrite(motorRpin1, HIGH);
-        digitalWrite(motorRpin2, LOW);
+        digitalWrite(motorLpin1, HIGH);
+        digitalWrite(motorLpin2, LOW);
       }
-      analogWrite(motorLPWM, motorPower);
+      analogWrite(motorLPWM, abs(motorPower - motorDifference));
       analogWrite(motorRPWM, motorPower);
       analogWrite(motorMPWM, motorPower);
-      analogWrite(motorRPWM, abs(motorPower - motorDifference));
     }
     else
     {
       if (motorPower - motorDifference < 0)
       {
-        digitalWrite(motorRpin1, LOW);
-        digitalWrite(motorRpin2, HIGH);
+        digitalWrite(motorRpin1, HIGH);
+        digitalWrite(motorRpin2, LOW);
       }
-      analogWrite(motorLPWM, abs(motorPower - motorDifference));
-      analogWrite(motorRPWM, motorPower);
+      analogWrite(motorRPWM, abs(motorPower - motorDifference));
+      analogWrite(motorLPWM, motorPower);
       analogWrite(motorMPWM, motorPower);
     }
   }
@@ -155,21 +154,18 @@ void loop()
   {
     Serial.print("Square");
     analogWrite(motorMPWM, 0);
-    // digitalWrite(motorControl2, HIGH);
-    delay(50);
+    digitalWrite(motorLpin1, LOW);
+    digitalWrite(motorLpin2, HIGH);
+    digitalWrite(motorRpin1, HIGH);
+    digitalWrite(motorRpin2, LOW);
+    analogWrite(motorLPWM, 255);
+    analogWrite(motorRPWM, 255);
+    delay(20);
   }
 
   if (GamePad.isCirclePressed())
   {
     Serial.print("Circle");
-    analogWrite(motorMPWM, 0);
-    //  digitalWrite(motorControl1, HIGH);
-    delay(50);
-  }
-
-  if (GamePad.isCrossPressed())
-  {
-    Serial.print("Cross");
     analogWrite(motorMPWM, 0);
     digitalWrite(motorLpin1, HIGH);
     digitalWrite(motorLpin2, LOW);
@@ -180,17 +176,15 @@ void loop()
     delay(20);
   }
 
+  if (GamePad.isCrossPressed())
+  {
+    Serial.print("Cross");
+    
+  }
+
   if (GamePad.isTrianglePressed())
   {
-    Serial.print("Triangle");
-    analogWrite(motorMPWM, 0);
-    digitalWrite(motorLpin1, LOW);
-    digitalWrite(motorLpin2, HIGH);
-    digitalWrite(motorRpin1, HIGH);
-    digitalWrite(motorRpin2, LOW);
-    analogWrite(motorLPWM, 255);
-    analogWrite(motorRPWM, 255);
-    delay(20);
+    
   }
 
   if (GamePad.isStartPressed())
