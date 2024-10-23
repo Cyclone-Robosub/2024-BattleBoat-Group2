@@ -7,16 +7,16 @@
 // counterclockwise forward
 int motorLPower = 0;
 int motorLpin1;
-int motorLPWM;
+int motorLPWM = 5;
 int motorLpin2;
 int motorRpin1;
-int motorRPWM;
+int motorRPWM = 6;
 int motorRpin2;
 int motorRPower = 0;
 int motorMPower = 0;
 int motorMpin1;
 int motorMpin2;
-int motorMPWM = 0;
+int motorMPWM = 9;
 void setup()
 {
   // put your setup code here, to run once:
@@ -25,10 +25,13 @@ void setup()
   // Need the pin numbers for these motors
   pinMode(motorLpin1, OUTPUT);
   pinMode(motorLpin2, OUTPUT);
+  pinMode(motorLPWM, OUTPUT);
   pinMode(motorRpin1, OUTPUT);
   pinMode(motorRpin2, OUTPUT);
+  pinMode(motorRPWM, OUTPUT);
   pinMode(motorMpin1, OUTPUT);
   pinMode(motorMpin2, OUTPUT);
+  pinMode(motorMPWM, OUTPUT);
 }
 
 void loop()
@@ -48,7 +51,7 @@ void loop()
   else if (y > 0)
   {
     motorDifference = int((18 * x));
-    motorPower = int((39 * y));
+    motorPower = int((39 * y + 18));
     // Both Motor Needs to be forward
     digitalWrite(motorLpin1, HIGH);
     digitalWrite(motorLpin2, LOW);
@@ -95,7 +98,7 @@ void loop()
     digitalWrite(motorMpin1, LOW);
     digitalWrite(motorMpin2, HIGH);
     motorDifference = int((18 * x));
-    motorPower = int((39 * abs(y)));
+    motorPower = int((39 * abs(y)) + 18);
     if (y == -7)
     {
       analogWrite(motorLPWM, 255);
