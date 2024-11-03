@@ -1,22 +1,24 @@
+
 // Copy and paste the code into Ardunio IDE in order to edit. Make sure to push changes to github as well!
 #define CUSTOM_SETTINGS
 #define INCLUDE_GAMEPAD_MODULE
 #include <Dabble.h>
 
+
 // clockwise backward
 // counterclockwise forward
 int motorLPower = 0;
-int motorLpin1;
-int motorLPWM = 5;
-int motorLpin2;
-int motorRpin1;
-int motorRPWM = 6;
-int motorRpin2;
+int motorLpin1 = 4;
+int motorLPWM = 8;
+int motorLpin2 = 5;
+int motorRpin1 = 6;
+int motorRPWM = 9;
+int motorRpin2 = 7;
 int motorRPower = 0;
 int motorMPower = 0;
-int motorMpin1;
-int motorMpin2;
-int motorMPWM = 9;
+int motorMpin1 = 18;
+int motorMpin2 = 19;
+int motorMPWM = 5;
 void setup()
 {
   // put your setup code here, to run once:
@@ -32,10 +34,13 @@ void setup()
   pinMode(motorMpin1, OUTPUT);
   pinMode(motorMpin2, OUTPUT);
   pinMode(motorMPWM, OUTPUT);
+
 }
 
 void loop()
 {
+  
+
   Dabble.processInput(); // this function is used to refresh data obtained from smartphone.Hence calling this function is mandatory in order to get data properly from your mobile.
   float y = GamePad.getYaxisData();
   float x = GamePad.getXaxisData();
@@ -46,12 +51,19 @@ void loop()
   int motorPower = 0;
   if (y == 0)
   {
+    Serial.print("Motor PWM: \t");
+    Serial.print(motorMPWM);
+    Serial.print(" y axis: \t");
+    Serial.print(y);
+    Serial.print(" x axis: \t");
+    Serial.print(x);
     analogWrite(motorMPWM, motorPower);
+    Serial.print("\n");
   }
   else if (y > 0)
   {
-    motorDifference = int((18 * x));
-    motorPower = int((39 * y + 18));
+    motorDifference = int((12 * x));
+    motorPower = int((39 * y + 5));
     // Both Motor Needs to be forward
     digitalWrite(motorLpin1, HIGH);
     digitalWrite(motorLpin2, LOW);
@@ -97,8 +109,8 @@ void loop()
     digitalWrite(motorRpin2, HIGH);
     digitalWrite(motorMpin1, LOW);
     digitalWrite(motorMpin2, HIGH);
-    motorDifference = int((18 * abs(x)));
-    motorPower = int((39 * abs(y)) + 18);
+    motorDifference = int((12 * abs(x)));
+    motorPower = int((39 * abs(y)) + 5);
     if (y == -7)
     {
       analogWrite(motorLPWM, 255);
@@ -129,7 +141,7 @@ void loop()
     }
   }
 
-  Serial.print("KeyPressed: ");
+
   if (GamePad.isUpPressed())
   {
     Serial.print("UP");
@@ -160,7 +172,7 @@ void loop()
     digitalWrite(motorRpin2, LOW);
     analogWrite(motorLPWM, 255);
     analogWrite(motorRPWM, 255);
-    delay(20);
+    
   }
 
   if (GamePad.isCirclePressed())
@@ -173,7 +185,7 @@ void loop()
     digitalWrite(motorRpin2, HIGH);
     analogWrite(motorLPWM, 255);
     analogWrite(motorRPWM, 255);
-    delay(20);
+    
   }
 
   if (GamePad.isCrossPressed())
@@ -196,22 +208,7 @@ void loop()
   {
     Serial.print("Select");
   }
-  Serial.print('\t');
+  
 
-  int a = GamePad.getAngle();
-  Serial.print("Angle: ");
-  Serial.print(a);
-  Serial.print('\t');
-  int r = GamePad.getRadius();
-  Serial.print("Radius: ");
-  // Serial.print(b);
-  Serial.print('\t');
-  // float x = GamePad.getXaxisData();
-  Serial.print("x_axis: ");
-  Serial.print(x);
-  Serial.print('\t');
-  // float y = GamePad.getYaxisData();
-  Serial.print("y_axis: ");
-  Serial.println(y);
-  Serial.println();
+  
 }
